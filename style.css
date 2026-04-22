@@ -109,15 +109,9 @@ body {
   color: #fff;
 }
 
-#ui-scale span {
-  font-weight: 700;
-  font-size: 1rem;
-  pointer-events: none;
-}
-
 #ui-layer {
   transition: opacity 0.3s, transform 0.2s;
-  transform-origin: top right;
+  transform-origin: top left;
 }
 #ui-layer.hidden {
   opacity: 0;

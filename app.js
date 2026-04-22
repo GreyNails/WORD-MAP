@@ -110,16 +110,13 @@ function init() {
     btn.classList.toggle('collapsed', layer.classList.contains('hidden'));
   });
 
-  // UI scale toggle
-  const uiScales = [1, 0.85, 0.7, 1.15];
-  const uiScaleLabels = ['A', 'A-', 'A--', 'A+'];
-  let uiScaleIdx = 0;
-  const scaleBtn = document.getElementById('ui-scale');
-  scaleBtn.addEventListener('click', () => {
-    uiScaleIdx = (uiScaleIdx + 1) % uiScales.length;
-    const s = uiScales[uiScaleIdx];
+  // UI scale slider
+  const uiScaleSlider = document.getElementById('ui-scale');
+  const uiScaleVal = document.getElementById('ui-scale-val');
+  uiScaleSlider.addEventListener('input', () => {
+    const s = parseInt(uiScaleSlider.value) / 100;
+    uiScaleVal.textContent = uiScaleSlider.value + '%';
     document.getElementById('ui-layer').style.transform = s === 1 ? '' : `scale(${s})`;
-    scaleBtn.querySelector('span').textContent = uiScaleLabels[uiScaleIdx];
   });
 
   // Similarity scale slider
