@@ -391,12 +391,54 @@ body {
 
 #info {
   position: fixed;
-  bottom: 20px; right: 20px;
+  bottom: 50px; right: 20px;
   z-index: 50;
   font-size: 0.75rem;
   color: #444;
   text-align: right;
   line-height: 1.6;
+}
+
+/* UI Scale bottom bar — outside ui-layer so it doesn't scale itself */
+#ui-scale-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 8px 20px;
+  background: rgba(10, 10, 30, 0.45);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(122, 92, 255, 0.15);
+}
+#ui-scale-bar label {
+  font-size: 0.75rem;
+  color: #888;
+  white-space: nowrap;
+}
+#ui-scale-bar input[type="range"] {
+  width: 120px;
+  -webkit-appearance: none;
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #7a5cff, #00d2ff);
+  outline: none;
+}
+#ui-scale-bar input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(122, 92, 255, 0.5);
+}
+#ui-scale-bar #ui-scale-val {
+  font-size: 0.75rem;
+  color: #00d2ff;
+  font-weight: 600;
+  min-width: 36px;
 }
 
 /* ===== Mobile ===== */
@@ -437,13 +479,13 @@ body {
 
   #control-panel {
     top: auto;
-    bottom: 12px;
+    bottom: 48px;
     right: 12px;
     left: 12px;
     width: auto;
     padding: 16px;
     border-radius: 14px;
-    max-height: 45vh;
+    max-height: 40vh;
     overflow-y: auto;
   }
 
@@ -479,5 +521,16 @@ body {
   }
   .lock-btn {
     padding: 12px;
+  }
+
+  #ui-scale-bar {
+    padding: 10px 16px;
+  }
+  #ui-scale-bar input[type="range"] {
+    width: 140px;
+    height: 6px;
+  }
+  #ui-scale-bar input[type="range"]::-webkit-slider-thumb {
+    width: 22px; height: 22px;
   }
 }
