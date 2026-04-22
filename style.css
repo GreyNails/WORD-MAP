@@ -76,6 +76,78 @@ body {
   z-index: 50;
   display: flex; gap: 0;
 }
+
+/* UI collapse toggle */
+#ui-toggle {
+  position: fixed;
+  top: 20px; right: 20px;
+  z-index: 200;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(122, 92, 255, 0.4);
+  background: rgba(10, 10, 30, 0.9);
+  backdrop-filter: blur(10px);
+  color: #888;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+#ui-toggle:hover { border-color: #7a5cff; color: #fff; }
+#ui-toggle.collapsed {
+  background: linear-gradient(135deg, rgba(122,92,255,0.3), rgba(0,210,255,0.2));
+  border-color: #7a5cff;
+  color: #fff;
+}
+
+#ui-layer {
+  transition: opacity 0.3s;
+}
+#ui-layer.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Search toggle button */
+#search-toggle {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 51;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(122, 92, 255, 0.4);
+  background: rgba(10, 10, 30, 0.85);
+  backdrop-filter: blur(10px);
+  color: #888;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+#search-toggle:hover { border-color: #7a5cff; color: #fff; }
+#search-toggle.active {
+  background: linear-gradient(135deg, rgba(122,92,255,0.3), rgba(0,210,255,0.2));
+  border-color: #7a5cff;
+  color: #fff;
+}
+
+/* Search */
+#search-box {
+  position: fixed;
+  top: 70px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  transition: opacity 0.3s, transform 0.3s;
+}
+#search-box.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(-10px);
+}
 #mode-switcher button {
   padding: 8px 20px;
   border: 1px solid rgba(122, 92, 255, 0.4);
@@ -95,13 +167,7 @@ body {
   border-color: #7a5cff;
 }
 
-/* Search */
-#search-box {
-  position: fixed;
-  top: 20px; left: 50%;
-  transform: translateX(-50%);
-  z-index: 50;
-}
+/* Search input styles */
 #search-box input {
   width: 320px;
   padding: 10px 18px;

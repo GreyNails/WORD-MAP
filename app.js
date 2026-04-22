@@ -80,13 +80,34 @@ function init() {
   canvas.addEventListener('click', onClick);
   canvas.addEventListener('mousedown', () => { controls.autoRotate = false; });
 
+  // Search toggle
+  const searchToggle = document.getElementById('search-toggle');
+  const searchBox = document.getElementById('search-box');
+  searchToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const open = searchBox.classList.toggle('hidden');
+    searchToggle.classList.toggle('active', !searchBox.classList.contains('hidden'));
+    if (!searchBox.classList.contains('hidden')) {
+      document.getElementById('search-input').focus();
+    }
+  });
+
   // Search
   const searchInput = document.getElementById('search-input');
   searchInput.addEventListener('input', onSearch);
   searchInput.addEventListener('focus', () => { if (searchInput.value) onSearch(); });
   document.addEventListener('click', (e) => {
-    if (!document.getElementById('search-box').contains(e.target))
+    if (!searchBox.contains(e.target) && e.target !== searchToggle) {
       document.getElementById('search-results').style.display = 'none';
+    }
+  });
+
+  // UI collapse toggle
+  document.getElementById('ui-toggle').addEventListener('click', () => {
+    const layer = document.getElementById('ui-layer');
+    const btn = document.getElementById('ui-toggle');
+    layer.classList.toggle('hidden');
+    btn.classList.toggle('collapsed', layer.classList.contains('hidden'));
   });
 
   // Similarity scale slider

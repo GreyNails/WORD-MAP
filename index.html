@@ -14,12 +14,27 @@
   <div id="load-progress">Loading word data...</div>
 </div>
 
+<!-- Collapse toggle: small icon when UI is hidden -->
+<button id="ui-toggle" title="Toggle UI">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6m-7.07-2.93 4.24-4.24m4.24-4.24 4.24-4.24M1 12h6m6 0h6m-2.93 7.07-4.24-4.24m-4.24-4.24L3.93 4.93"/>
+  </svg>
+</button>
+
+<div id="ui-layer">
+
 <div id="mode-switcher">
   <button class="active" data-mode="semantic">Semantic (OpenCLIP)</button>
   <button data-mode="spelling">Spelling Similarity</button>
 </div>
 
-<div id="search-box">
+<button id="search-toggle" title="Search">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+  </svg>
+</button>
+
+<div id="search-box" class="hidden">
   <input type="text" id="search-input" placeholder="Search words..." autocomplete="off">
   <div id="search-results"></div>
 </div>
@@ -65,6 +80,8 @@
   Drag to rotate / Scroll to zoom / Click word to select<br>
   OpenCLIP ViT-B-32 + UMAP
 </div>
+
+</div><!-- end #ui-layer -->
 
 <canvas id="canvas"></canvas>
 
