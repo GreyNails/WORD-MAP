@@ -110,13 +110,13 @@ function init() {
     btn.classList.toggle('collapsed', layer.classList.contains('hidden'));
   });
 
-  // UI scale slider — use zoom instead of transform to preserve fixed positioning
+  // UI scale slider — set CSS variable on :root, each panel scales independently
   const uiScaleSlider = document.getElementById('ui-scale');
   const uiScaleVal = document.getElementById('ui-scale-val');
   uiScaleSlider.addEventListener('input', () => {
     const s = parseInt(uiScaleSlider.value) / 100;
     uiScaleVal.textContent = uiScaleSlider.value + '%';
-    document.getElementById('ui-layer').style.zoom = s;
+    document.documentElement.style.setProperty('--ui-s', s);
   });
 
   // Similarity scale slider
