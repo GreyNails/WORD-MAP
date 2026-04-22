@@ -110,6 +110,14 @@ function init() {
     btn.classList.toggle('collapsed', layer.classList.contains('hidden'));
   });
 
+  // Legend toggle
+  document.getElementById('legend-toggle').addEventListener('click', () => {
+    const legend = document.getElementById('legend');
+    const btn = document.getElementById('legend-toggle');
+    legend.classList.toggle('hidden');
+    btn.classList.toggle('active', !legend.classList.contains('hidden'));
+  });
+
   // UI scale slider — set CSS variable on :root, each panel scales independently
   const uiScaleSlider = document.getElementById('ui-scale');
   const uiScaleVal = document.getElementById('ui-scale-val');

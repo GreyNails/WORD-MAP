@@ -108,6 +108,11 @@ body {
 }
 #toolbar button:hover { border-color: #7a5cff; color: #fff; }
 
+#legend-toggle.active {
+  border-color: #7a5cff;
+  color: #fff;
+}
+
 #ui-toggle.collapsed {
   background: linear-gradient(135deg, rgba(122,92,255,0.25), rgba(0,210,255,0.15));
   border-color: #7a5cff;
@@ -378,6 +383,11 @@ body {
   padding: 14px 18px;
   transform: scale(var(--ui-s));
   transform-origin: bottom left;
+  transition: opacity 0.3s;
+}
+#legend.hidden {
+  opacity: 0;
+  pointer-events: none;
 }
 #legend h4 {
   font-size: 0.8rem;
