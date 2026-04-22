@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IELTS 9400 Word Map - 3D Visualization</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="loading">
+  <h1>IELTS 9400 Word Map</h1>
+  <div class="spinner"></div>
+  <div id="load-progress">Loading word data...</div>
+</div>
+
+<div id="mode-switcher">
+  <button class="active" data-mode="semantic">Semantic (OpenCLIP)</button>
+  <button data-mode="spelling">Spelling Similarity</button>
+</div>
+
+<div id="search-box">
+  <input type="text" id="search-input" placeholder="Search words..." autocomplete="off">
+  <div id="search-results"></div>
+</div>
+
+<div id="tooltip">
+  <div><span class="word" id="tip-word"></span><span class="pos-tag" id="tip-pos"></span></div>
+  <div class="meaning" id="tip-meaning"></div>
+</div>
+
+<div id="control-panel">
+  <h3>Controls</h3>
+  <div class="ctrl-group">
+    <label>Similarity Scale <span class="value" id="sim-scale-val">10</span></label>
+    <input type="range" id="sim-scale" min="1" max="30" value="10" step="0.5">
+  </div>
+  <div class="ctrl-group">
+    <div class="toggle-container">
+      <label>IS Connect</label>
+      <label class="toggle">
+        <input type="checkbox" id="is-connect">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+  <div class="ctrl-group">
+    <button class="lock-btn" id="lock-btn">
+      <span class="icon">&#x1F513;</span>
+      <span class="label">Lock Selection</span>
+    </button>
+  </div>
+</div>
+
+<div id="legend"></div>
+
+<div id="info">
+  Drag to rotate / Scroll to zoom / Click word to select<br>
+  OpenCLIP ViT-B-32 + UMAP
+</div>
+
+<canvas id="canvas"></canvas>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/"
+  }
+}
+</script>
+<script type="module" src="app.js"></script>
+</body>
+</html>
