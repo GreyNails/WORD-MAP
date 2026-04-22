@@ -12,6 +12,9 @@ let connectionLines = null;
 let highlightedSet = new Set();
 let isLocked = false;
 let currentMode = 'semantic'; // 'semantic' or 'spelling'
+let traverseList = []; // sorted array of highlighted indices (excluding selected)
+let traverseIndex = -1; // current position in traverseList
+let traversePrevColor = null; // to restore color when moving away
 
 const posColors = {
   n:     [0.00, 0.82, 1.00],
@@ -108,6 +111,10 @@ function init() {
     btn.querySelector('.icon').textContent = isLocked ? '\u{1F512}' : '\u{1F513}';
     btn.querySelector('.label').textContent = isLocked ? 'Locked' : 'Lock Selection';
   });
+
+  // Traverse buttons
+  document.getElementById('traverse-prev').addEventListener('click', () => traverseStep(-1));
+  document.getElementById('traverse-next').addEventListener('click', () => traverseStep(1));
 
   // Mode switcher
   document.querySelectorAll('#mode-switcher button').forEach(btn => {
@@ -313,6 +320,18 @@ function highlightNeighbors(idx) {
     connectionLines = new THREE.LineSegments(lineGeo, lineMat);
     scene.add(connectionLines);
   }
+
+  // Build traverse list from neighbors (sorted by distance)
+  traverseList = neighbors.slice().sort((a, b) => {
+    const [ax, ay, az] = getCoords(wordData[a]);
+    const [bx, by, bz] = getCoords(wordData[b]);
+    const da = Math.sqrt((ax-cx)**2 + (ay-cy)**2 + (az-cz)**2);
+    const db = Math.sqrt((bx-cx)**2 + (by-cy)**2 + (bz-cz)**2);
+    return da - db;
+  });
+  traverseIndex = -1;
+  traversePrevColor = null;
+  updateTraverseUI();
 }
 
 function removeConnections() {
@@ -324,7 +343,88 @@ function removeConnections() {
   }
 }
 
+function updateTraverseUI() {
+  const group = document.getElementById('traverse-group');
+  const counter = document.getElementById('traverse-counter');
+  if (traverseList.length > 0) {
+    group.style.display = '';
+    counter.textContent = `${traverseIndex + 1}/${traverseList.length}`;
+  } else {
+    group.style.display = 'none';
+    counter.textContent = '0/0';
+  }
+}
+
+function traverseStep(dir) {
+  if (traverseList.length === 0) return;
+
+  // Restore previous traversed word to its highlighted color (POS color)
+  if (traverseIndex >= 0 && traverseIndex < traverseList.length && traversePrevColor) {
+    const prevIdx = traverseList[traverseIndex];
+    pointColors[prevIdx * 3] = traversePrevColor[0];
+    pointColors[prevIdx * 3 + 1] = traversePrevColor[1];
+    pointColors[prevIdx * 3 + 2] = traversePrevColor[2];
+    pointSizes[prevIdx] = 1.8;
+  }
+
+  // Move index
+  traverseIndex += dir;
+  if (traverseIndex >= traverseList.length) traverseIndex = 0;
+  if (traverseIndex < 0) traverseIndex = traverseList.length - 1;
+
+  const idx = traverseList[traverseIndex];
+  const d = wordData[idx];
+
+  // Save current color before turning white
+  traversePrevColor = [
+    pointColors[idx * 3],
+    pointColors[idx * 3 + 1],
+    pointColors[idx * 3 + 2],
+  ];
+
+  // Turn traversed word white and enlarge
+  pointColors[idx * 3] = 1;
+  pointColors[idx * 3 + 1] = 1;
+  pointColors[idx * 3 + 2] = 1;
+  pointSizes[idx] = 2.8;
+
+  pointCloud.geometry.attributes.color.needsUpdate = true;
+  pointCloud.geometry.attributes.size.needsUpdate = true;
+
+  // Show tooltip for this word
+  const pc = posColors[d.p] || posColors.other;
+  const hex = '#' + pc.map(v => Math.round(v * 255).toString(16).padStart(2, '0')).join('');
+  document.getElementById('tip-word').textContent = d.w;
+  document.getElementById('tip-pos').textContent = posLabels[d.p] || d.p;
+  document.getElementById('tip-pos').style.background = hex + '33';
+  document.getElementById('tip-pos').style.color = hex;
+  document.getElementById('tip-meaning').textContent = d.m;
+  const tooltip = document.getElementById('tooltip');
+  tooltip.style.display = 'block';
+  tooltip.style.left = '50%';
+  tooltip.style.top = '75%';
+  tooltip.style.transform = 'translate(-50%, -50%)';
+
+  updateTraverseUI();
+}
+
+function resetTraverse() {
+  // Restore color of currently traversed word
+  if (traverseIndex >= 0 && traverseIndex < traverseList.length && traversePrevColor) {
+    const prevIdx = traverseList[traverseIndex];
+    pointColors[prevIdx * 3] = traversePrevColor[0];
+    pointColors[prevIdx * 3 + 1] = traversePrevColor[1];
+    pointColors[prevIdx * 3 + 2] = traversePrevColor[2];
+    pointSizes[prevIdx] = 1.8;
+  }
+  traverseList = [];
+  traverseIndex = -1;
+  traversePrevColor = null;
+  updateTraverseUI();
+}
+
 function resetHighlight() {
+  resetTraverse();
   const n = wordData.length;
   for (let i = 0; i < n; i++) {
     pointColors[i * 3] = baseColors[i * 3];
